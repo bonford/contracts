@@ -11,8 +11,8 @@ var seller = web3.eth.accounts[1]
 var arbiter = web3.eth.accounts[2]
 
 var compiled = solc.compile(source)  //compile the contract
-var bytecode = compiled.contracts[':Escrow'].bytecode   //get the bytecode of the contract
-var abi = JSON.parse(compiled.contracts[':Escrow'].interface)
+var bytecode = compiled.contracts.Escrow.bytecode   //get the bytecode of the contract
+var abi = JSON.parse(compiled.contracts.Escrow.interface)
 var escrowContract = web3.eth.contract(abi); //build new contract
 
 //deploy contract
@@ -20,8 +20,11 @@ var deployed = escrowContract.new(seller, arbiter, {
     from: buyer,
     data:bytecode, 
     gas: 4700000, 
-    gasPrice: 5
+    gasPrice: 5,
+    value: web3.toWei(5, 'ether')
 }, (error, contract) => {})
+
+var balance = (acct) => { return web3.fromWei(web3.eth.getBalance(acct), 'ether').toNumber()}
 
 deployed.address  //check the contract address
 

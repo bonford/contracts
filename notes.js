@@ -11,8 +11,8 @@ var seller = web3.eth.accounts[1]
 var arbiter = web3.eth.accounts[2]
 
 var compiled = solc.compile(source)  //compile the contract
-var bytecode = compiled.contracts.Escrow.bytecode   //get the bytecode of the contract
-var abi = JSON.parse(compiled.contracts.Escrow.interface)
+var bytecode = compiled.contracts.helloworld.bytecode   //get the bytecode of the contract
+var abi = JSON.parse(compiled.contracts.helloworld.interface)
 var escrowContract = web3.eth.contract(abi); //build new contract
 
 //deploy contract

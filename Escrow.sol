@@ -4,15 +4,15 @@ contract Escrow {
     address public seller;
     address public arbiter;
 
-    function Escrow(address _seller, address _arbiter) {
+    function Escrow(address _seller, address _arbiter) payable {
         buyer = msg.sender;
         seller = _seller;
         arbiter = _arbiter;
     }
-/*
+
     function payoutToSeller() {
         if (msg.sender == buyer || msg.sender == arbiter){
- seller.transfer(this.balance);
+             seller.send(this.balance);
         }
        
 
@@ -20,12 +20,12 @@ contract Escrow {
 
       function refundToBuyer() {
           if (msg.sender == seller || msg.sender == arbiter){
-         buyer.transfer(this.balance);
+              buyer.send(this.balance);
           }
     }
 
     function getBalance() constant returns (uint) {
         return this.balance;
     }
-    */
+   
 }

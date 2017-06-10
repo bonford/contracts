@@ -19,8 +19,12 @@ global.SolidityFunction = require("web3/lib/web3/function")
 // global.web3 = new Web3(new Web3.providers.HttpProvider(`http://${global.config.rpc.host}:${global.config.rpc.port}`))
 // global.web3 = new Web3(new Web3.providers.HttpProvider(`https://mainnet.infura.io/EjLdRlni9SfrUBEnnvVt`))
 global.web3 = new Web3(new Web3.providers.HttpProvider(`https://ropsten.infura.io/EjLdRlni9SfrUBEnnvVt`))
-// global.ENS = require("./ensutils.js")
-// global.ens = new ENS(global.web3)
+
+
+// ENS
+// global.ENS = require("ethereum-ens")
+global.ENS = require("./ensutils.js")
+global.ens = new ENS(global.web3)
 
 // Global Account Accessors
 // global.acct1 = web3.eth.accounts[0]
@@ -121,9 +125,9 @@ class Helpers {
     var rawTx = {
       nonce: global.web3.toHex(global.web3.eth.getTransactionCount(fromAddress)),
       gasPrice: global.web3.toHex(global.web3.eth.gasPrice),
-      gasLimit: global.web3.toHex(300000),
+      gasLimit: global.web3.toHex(arguments['0'].gas || 300000),
       to: deployed.address,
-      from: fromAddress,
+       from: fromAddress,
       data: payloadData
     }
 

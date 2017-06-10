@@ -3,13 +3,10 @@ contract CrowdFund {
     address public beneficiary;
     uint256 public goal;
     uint256 public deadline;
+    mapping (address => uint256) funders;
+    address[] funderAddresses;
 
-    struct Funder {
-        address addr;
-        uint256 contribution;
-    }
-
-    Funder[] funders;
+    
 
     function CrowdFund(address _beneficiary, uint256 _goal, uint256 _duration) {
         beneficiary = _beneficiary;
@@ -17,8 +14,21 @@ contract CrowdFund {
         deadline = now + _duration;
     }
 
+    function getFunderContribution(address _addr) constant returns (uint) {
+        return funders[_addr];
+    }
+
+    function getFunderAddress(uint _index) constant returns (address) {
+        return funderAddresses[_index];
+    }
+
+    function funderAddressLength() constant returns (uint) {
+        return funderAddresses.length;
+    }
+
     function contribute() payable  {
-        funders.push(Funder(msg.sender, msg.value));
+        if(funders[msg.sender] == 0) funderAddresses.push(msg.sender);
+        funders[msg.sender] += msg.value;
     }
 
     function payout() {
@@ -26,12 +36,9 @@ contract CrowdFund {
     }
     
     function refund() {
-        if (msg.sender != beneficiary) throw;
-        uint256 index = 0;
-
-        while (index < funders.length){
-            funders[index].addr.send(funders[index].contribution);
-            index++;
+        if(now > deadline && this.balance < goal) { 
+        msg.sender.send(funders[msg.sender]);
+        funders[msg.sender] = 0;
         }
     }
 }

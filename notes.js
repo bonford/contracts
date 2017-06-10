@@ -30,3 +30,12 @@ deployed.address  //check the contract address
 
 
 
+ decypher.callContract({
+ deployed: ens.ethRegistrar,
+ pKeyx: pKeyx,
+ methodName: "startAuction",
+fromAddress: addr
+ }, web3.sha3("furtherdata"))
+
+
+

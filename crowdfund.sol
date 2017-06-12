@@ -6,7 +6,7 @@ contract CrowdFund {
     mapping (address => uint256) funders;
     address[] funderAddresses;
 
-    
+    event NewContribution(address indexed _from, uint256 _value_);
 
     function CrowdFund(address _beneficiary, uint256 _goal, uint256 _duration) {
         beneficiary = _beneficiary;
@@ -29,6 +29,7 @@ contract CrowdFund {
     function contribute() payable  {
         if(funders[msg.sender] == 0) funderAddresses.push(msg.sender);
         funders[msg.sender] += msg.value;
+        NewContribution(msg.sender, msg.value);
     }
 
     function payout() {
@@ -42,3 +43,5 @@ contract CrowdFund {
         }
     }
 }
+
+
